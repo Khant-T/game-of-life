@@ -62,6 +62,9 @@ public:
 	int iX(int i);
 	int iY(int i);
 
+	// Run the simulation
+	void RunSimuation();
+
 private:
 	bool isRunning  		= false;
 	bool isRunningSim		= false;

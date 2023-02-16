@@ -1,5 +1,23 @@
 #include "Game.h"
 
+
+#define TICK_INTERVAL 20
+static Uint32 nextTime;
+
+
+/* ****************************** */
+Uint32 TimeLeft()
+{
+	Uint32 curTime;
+	curTime = SDL_GetTicks();
+	if (nextTime <= curTime)
+		return 0;
+	else
+		return nextTime - curTime;
+}
+/* ****************************** */
+
+
 /* ****************************** */
 Game::Game()
 	: window{nullptr}, renderer{nullptr}, isRunning{false}
@@ -36,6 +54,7 @@ Game::Game()
 }
 /* ****************************** */
 
+
 /* ****************************** */
 Game::~Game()
 {
@@ -43,6 +62,7 @@ Game::~Game()
 	SDL_DestroyWindow(window);
 }
 /* ****************************** */
+
 
 /* ****************************** */
 void Game::InitCells(int rows, int cols)
@@ -69,10 +89,11 @@ void Game::InitCells(int rows, int cols)
 }
 /* ****************************** */
 
+
 /* ****************************** */
 void Game::Run()
 {
-	InitCells(20, 20);
+	InitCells(40, 40);
 	AdjustGrid();
 
 	while (isRunning)
@@ -96,6 +117,7 @@ void Game::Run()
 	}
 }
 /* ****************************** */
+
 
 /* ****************************** */
 void Game::HandleEvents()
@@ -150,6 +172,7 @@ void Game::HandleEvents()
 	}
 }
 /* ****************************** */
+
 
 /* ****************************** */
 void Game::Draw()
@@ -210,6 +233,7 @@ void Game::Draw()
 }
 /* ****************************** */
 
+
 /* ****************************** */
 void Game::AdjustGrid()
 // Keep the width and the height equal
@@ -244,6 +268,7 @@ void Game::AdjustGrid()
 }
 /* ****************************** */
 
+
 /* ****************************** */
 int Game::iX(int i)
 {
@@ -257,6 +282,66 @@ int Game::iY(int i)
 	if (i < 0)					return 0;
 	else if (i > grid.cols - 1)	return grid.cols - 1;
 	else						return i;
+}
+/* ****************************** */
+
+
+/* ****************************** */
+void Game::RunSimulation()
+{
+	for (int x = 0; x < cells.size(); ++x)
+		for (int y = 0; y < cells[x].size(); ++y)
+		{
+			// Reset the neighbour count
+			cells[x][y].neighbours = 0;
+			
+			// Top left
+			if (cells[iX(x - 1)][iY(y - 1)].isAlive)
+				cells[x][y].neighbours++;
+
+			// Top
+			if (cells[iX(x)][iY(y - 1)].isAlive)
+				cells[x][y].neighbours++;
+
+			// Top right
+			if (cells[iX(x + 1)][iY(y - 1)].isAlive)
+				cells[x][y].neighbours++;
+
+			// Left
+			if (cells[iX(x - 1)][iY(y)].isAlive)
+				cells[x][y].neighbours++;
+
+			// Right
+			if (cells[iX(x + 1)][iY(y)].isAlive)
+				cells[x][y].neighbours++;
+
+			// Bottom Left
+			if (cells[iX(x - 1)][iY(y + 1)].isAlive)
+				cells[x][y].neighbours++;
+
+			// Bottom
+			if (cells[iX(x)][iY(y + 1)].isAlive)
+				cells[x][y].neighbours++;
+
+			// Bottom right
+			if (cells[iX(x + 1)][iY(y + 1)].isAlive)
+				cells[x][y].neighbours++;
+		}
+
+	while (simTick < simDelay)
+	{
+		++simTick;
+		SDL_Delay(1);
+	}
+
+	for (int x = 0; x < cells.size(); x++)
+		for (int y = 0; y < cells[x].size(); y++) 
+		{
+			if (cells[x][y].neighbours == 3)	cells[x][y].Born();
+			if (cells[x][y].neighbours < 2)		cells[x][y].Die();
+			if (cells[x][y].neighbours > 3)		cells[x][y].Die();
+		}
+	simTick = 0;
 }
 /* ****************************** */
 
