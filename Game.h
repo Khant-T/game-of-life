@@ -55,6 +55,7 @@ public:
 	void InitCells(int rows, int cols);
 	void Draw();
 	void Run();
+	void AdjustGrid();
 
 private:
 	SDL_Window* window;

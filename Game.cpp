@@ -4,7 +4,7 @@
 Game::Game()
 	: window{nullptr}, renderer{nullptr}, isRunning{false}
 {
-	// create SDL_Window
+	// Create SDL_Window
 	window = SDL_CreateWindow(
 		"Game of Life",
 		SDL_WINDOWPOS_CENTERED,
@@ -19,7 +19,7 @@ Game::Game()
 		return;
 	}
 
-	// create SDL_Renderer
+	// Create SDL_Renderer
 	renderer = SDL_CreateRenderer(
 		window,
 		-1,
@@ -31,7 +31,7 @@ Game::Game()
 		return;
 	}
 
-	// run program
+	// Run program
 	isRunning = true;
 }
 
@@ -100,20 +100,54 @@ void Game::Draw()
 	{
 		for (int j = 0; j < grid.cols; ++j)
 		{
-			 SDL_FRect cellRect = {
-			 	1.0f + (float) grid.posX + ((float) x * grid.cellWidth),
-			 	1.0f + (float) grid.posY + ((float) x * grid.cellHeight),
-			 	grid.cellWidth,
-			 	grid.cellHeight
-			 };
+			// Define size and position for each cell
+			SDL_FRect cellRect = {
+				1.0f + (float) grid.posX + ((float) x * grid.cellWidth),
+				1.0f + (float) grid.posY + ((float) x * grid.cellHeight),
+				grid.cellWidth,
+				grid.cellHeight
+			};
 
-			 if (cells[x][y].isAlive)
-			 	SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
-			 else
-			 	SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+			 // Color a cell based on its alive status
+			if (cells[x][y].isAlive)
+				SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+			else
+				SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
 
-			 SDL_RenderFillRectF(renderer, &cellRect);
+			SDL_RenderFillRectF(renderer, &cellRect);
 		}
 	}
 }
 
+
+void Game::AdjustGrid()
+// Keep the width and the height equal
+// Center the grid in the window
+{
+	int ww = 0;
+	int wh = 0;
+	SDL_GetWindowSize(window, &ww, &wh);
+
+	int maxLength = 0;
+	if (ww > wh)
+		maxLength = wh;
+	else
+		maxLength = ww;
+
+	grid.posX = grid.borderSize;
+	grid.posY = grid.borderSize;
+
+	int botRightX = maxLength - grid.borderSize;
+	int botRightY = maxLength - grid.borderSize;
+
+	grid.width = botRightX - grid.posX;
+	grid.height = botRightY - grid.posY;
+
+	grid.cellWidth = (float) grid.width/(float) grid.rows;
+	grid.cellHeight = (float) grid.height/(float) grid.cols;
+
+	if (ww > wh)
+		grid.posX = ((float) ww/2.0f) - ((float) grid.width/2.0f);
+	else
+		grid.posY = ((float) wh/2.0f) - ((float) grid.height/2.0f);
+}
