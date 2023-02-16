@@ -1,5 +1,6 @@
 #include "Game.h"
 
+
 Game::Game()
 	: window{nullptr}, renderer{nullptr}, isRunning{false}
 {
@@ -34,11 +35,13 @@ Game::Game()
 	isRunning = true;
 }
 
+
 Game::~Game()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }
+
 
 void Game::Run()
 {
@@ -65,3 +68,29 @@ void Game::Run()
 		SDL_RenderPresent(renderer);
 	}
 }
+
+
+void Game::InitCells(int r, int c)
+{
+	cells.clear();
+	grid.rows = rows;
+	grid.cols = cols;
+
+	for (int i = 0; i < rows; ++i)
+	{
+		vector<Cell> columns;
+		for (int j = 0; j < grid.cols; ++j)
+		{
+			columns.push_back(Cell());
+		}
+		cells.push_back(column);
+	}
+
+	// Initialize some cells
+	for (int i = 0; i < rows; ++i)
+	{
+		cells[i][i].Born();
+	}
+}
+
+
