@@ -96,25 +96,32 @@ void Game::Run()
 	InitCells(40, 40);
 	AdjustGrid();
 
+	nextTime = SDL_GetTicks() + TICK_INTERVAL;
+
 	while (isRunning)
 	{
-		SDL_Event ev;
-		SDL_WaitEvent(&ev);
-
 		// Clear the screen
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 		SDL_RenderClear(renderer);
 
-		// Handle events
-		HandleEvents();
 
 		// Draw everything
 		Draw();
 		SDL_RenderPresent(renderer);
 
-		
+		// Handle events
+		HandleEvents();
 
+		// Run cell simulation
+		if (isRunningSim && !mouseDown)
+			RunSimulation();
+
+		// Limit framerate
+		SDL_Delay(TimeLeft());
+		nextTime += TICK_INTERVAL;
 	}
+
+	cout << "The game loop has ended." << endl;
 }
 /* ****************************** */
 
@@ -220,6 +227,7 @@ void Game::Draw()
 			2,
 			(float) ((i == grid.rows) ? grid.height + 2 : grid.height)
 		};
+		SDL_RenderFillRectF(renderer, &vLine);
 	}
 	for (int i = 0; i <= grid.cols; ++i)
 	{
@@ -229,6 +237,7 @@ void Game::Draw()
 			(float) ((i == grid.cols) ? grid.width + 2 : grid.width),
 			2
 		};
+		SDL_RenderFillRectF(renderer, &hLine);
 	}
 }
 /* ****************************** */

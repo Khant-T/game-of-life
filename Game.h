@@ -63,11 +63,13 @@ public:
 	int iY(int i);
 
 	// Run the simulation
-	void RunSimuation();
+	void RunSimulation();
 
 private:
 	bool isRunning  		= false;
 	bool isRunningSim		= false;
+	int simTick				= 0;
+	int simDelay			= 50;
 
 	SDL_Window*   window	= nullptr;
 	SDL_Renderer* renderer  = nullptr;
