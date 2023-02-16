@@ -94,3 +94,26 @@ void Game::InitCells(int r, int c)
 }
 
 
+void Game::Draw()
+{
+	for (int i = 0; i < grid.rows; ++i)
+	{
+		for (int j = 0; j < grid.cols; ++j)
+		{
+			 SDL_FRect cellRect = {
+			 	1.0f + (float) grid.posX + ((float) x * grid.cellWidth),
+			 	1.0f + (float) grid.posY + ((float) x * grid.cellHeight),
+			 	grid.cellWidth,
+			 	grid.cellHeight
+			 };
+
+			 if (cells[x][y].isAlive)
+			 	SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+			 else
+			 	SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+
+			 SDL_RenderFillRectF(renderer, &cellRect);
+		}
+	}
+}
+
