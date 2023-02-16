@@ -211,3 +211,20 @@ void Game::AdjustGrid()
 		grid.posY = ((float) wh/2.0f) - ((float) grid.height/2.0f);
 }
 /* ****************************** */
+
+/* ****************************** */
+int Game::iX(int i)
+{
+	if (i < 0)					return 0;
+	else if (i > grid.rows - 1)	return grids.rows - 1;
+	else						return i;
+}
+
+int Game::iY(int i)
+{
+	if (i < 0)					return 0;
+	else if (i > grid.cols - 1)	return grids.cols - 1;
+	else						return i;
+}
+/* ****************************** */
+

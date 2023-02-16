@@ -58,6 +58,10 @@ public:
 	void Draw();
 	void AdjustGrid();
 
+	// Helper functions: limit the indices to rows & cols:
+	int iX(int i);
+	int iY(int i);
+
 private:
 	bool isRunning  		= false;
 	bool isRunningSim		= false;
