@@ -171,9 +171,41 @@ void Game::Draw()
 				SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
 			else
 				SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
-
 			SDL_RenderFillRectF(renderer, &cellRect);
+
+			// Mouse hover effect
+			if (mouseX > cellRect.x && mouseX < cellRect.x + cellRect.w)
+			{
+				if (mouseY > cellRect.y && mouseY < cellRect.y + cellRect.h)
+				{
+					mouseCellX = x;
+					mouseCellY = y;
+					SDL_SetRenderDrawColor(renderer, 150, 150, 150, 15);
+					SDL_RenderFillRectF(renderer, &cellRect);
+				}
+			}
 		}
+	}
+
+	// Draw grid lines
+	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+	for (int i = 0; i <= grid.rows; ++i)
+	{
+		SDL_FRect vLine = {
+			(float) grid.posX + (i * grid.cellWidth) + 1,
+			(float) grid.posY + 1,
+			2,
+			(float) ((i == grid.rows) ? grid.height + 2 : grid.height)
+		};
+	}
+	for (int i = 0; i <= grid.cols; ++i)
+	{
+		SDL_FRect vLine = {
+			(float) grid.posX + 1,
+			(float) grid.posY + (i * grid.cellHeight) + 1,
+			(float) ((i == grid.cols) ? grid.width + 2 : grid.width),
+			2
+		};
 	}
 }
 /* ****************************** */
@@ -216,14 +248,14 @@ void Game::AdjustGrid()
 int Game::iX(int i)
 {
 	if (i < 0)					return 0;
-	else if (i > grid.rows - 1)	return grids.rows - 1;
+	else if (i > grid.rows - 1)	return grid.rows - 1;
 	else						return i;
 }
 
 int Game::iY(int i)
 {
 	if (i < 0)					return 0;
-	else if (i > grid.cols - 1)	return grids.cols - 1;
+	else if (i > grid.cols - 1)	return grid.cols - 1;
 	else						return i;
 }
 /* ****************************** */
