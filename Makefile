@@ -1,2 +1,2 @@
 game:
-	clang++ main.cpp -o play -I include -L lib -l SDL2-2.0.0
+	clang++ main.cpp Game.cpp -std=c++11 -o play -I include -L lib -l SDL2-2.0.0
