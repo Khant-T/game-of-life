@@ -54,6 +54,7 @@ public:
 
 	void InitCells(int rows, int cols);
 	void Run();
+	void HandleEvents();
 	void Draw();
 	void AdjustGrid();
 

@@ -80,6 +80,43 @@ void Game::Run()
 		SDL_Event ev;
 		SDL_WaitEvent(&ev);
 
+		// Clear the screen
+		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+		SDL_RenderClear(renderer);
+
+		// Handle events
+		HandleEvents();
+
+		// Draw everything
+		Draw();
+		SDL_RenderPresent(renderer);
+
+		
+
+	}
+}
+/* ****************************** */
+
+/* ****************************** */
+void Game::HandleEvents()
+{
+	SDL_Event ev;
+	while (SDL_PollEvent(&ev))
+	{
+		// Mouse events:
+		if (ev.type == SDL_MOUSEMOTION)
+			SDL_GetMouseState(&mouseX, &mouseY);
+
+		if (ev.type == SDL_MOUSEBUTTONDOWN)
+			if (ev.button.button == SDL_BUTTON_LEFT)
+				mouseDown = true;
+
+		if (ev.type == SDL_MOUSEBUTTONDOWN)
+			if (ev.button.button == SDL_BUTTON_LEFT)
+				if (mouseDown)
+					mouseDown = false;
+
+		// Window events:
 		if (ev.type == SDL_WINDOWEVENT)
 		{
 			if (ev.window.event == SDL_WINDOWEVENT_CLOSE)
@@ -95,18 +132,21 @@ void Game::Run()
 				AdjustGrid();
 		}
 
+		// Key events:
 		if (ev.type == SDL_KEYDOWN)
 		{
 			if (ev.key.keysym.sym == SDLK_ESCAPE)
 				isRunning = false;
+
+			if (ev.key.keysym.sym == SDLK_SPACE)
+			{
+				isRunningSim = !isRunningSim;
+				if (isRunningSim)
+					SDL_SetWindowTitle(window, "Game of Life (running)");
+				else
+					SDL_SetWindowTitle(window, "Game of Life (paused)");
+			}
 		}
-
-		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-		SDL_RenderClear(renderer);
-
-		Draw();
-
-		SDL_RenderPresent(renderer);
 	}
 }
 /* ****************************** */
