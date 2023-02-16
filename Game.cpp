@@ -45,6 +45,9 @@ Game::~Game()
 
 void Game::Run()
 {
+	InitCells(20, 20);
+	AdjustGrid();
+	
 	while (isRunning)
 	{
 		SDL_Event ev;
