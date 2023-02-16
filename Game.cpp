@@ -24,7 +24,7 @@ Game::Game()
 {
 	// Create SDL_Window
 	window = SDL_CreateWindow(
-		"Game of Life",
+		"Game of Life (paused)",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		800,
@@ -60,6 +60,7 @@ Game::~Game()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	cout << "Destroyed SDL Resources." << endl;
 }
 /* ****************************** */
 
@@ -83,9 +84,7 @@ void Game::InitCells(int rows, int cols)
 
 	// Initialize some cells
 	for (int i = 0; i < rows; ++i)
-	{
 		cells[i][i].Born();
-	}
 }
 /* ****************************** */
 
@@ -140,7 +139,7 @@ void Game::HandleEvents()
 			if (ev.button.button == SDL_BUTTON_LEFT)
 				mouseDown = true;
 
-		if (ev.type == SDL_MOUSEBUTTONDOWN)
+		if (ev.type == SDL_MOUSEBUTTONUP)
 			if (ev.button.button == SDL_BUTTON_LEFT)
 				if (mouseDown)
 					mouseDown = false;
@@ -177,6 +176,9 @@ void Game::HandleEvents()
 			}
 		}
 	}
+
+	if (mouseDown)
+		cells[mouseCellX][mouseCellY].Flip();
 }
 /* ****************************** */
 
@@ -198,9 +200,9 @@ void Game::Draw()
 
 			 // Color a cell based on its alive status
 			if (cells[x][y].isAlive)
-				SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+				SDL_SetRenderDrawColor(renderer, 140, 45, 85, 255);
 			else
-				SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+				SDL_SetRenderDrawColor(renderer, 0, 200, 255, 255);
 			SDL_RenderFillRectF(renderer, &cellRect);
 
 			// Mouse hover effect
@@ -218,7 +220,7 @@ void Game::Draw()
 	}
 
 	// Draw grid lines
-	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	for (int i = 0; i <= grid.rows; ++i)
 	{
 		SDL_FRect vLine = {
@@ -231,7 +233,7 @@ void Game::Draw()
 	}
 	for (int i = 0; i <= grid.cols; ++i)
 	{
-		SDL_FRect vLine = {
+		SDL_FRect hLine = {
 			(float) grid.posX + 1,
 			(float) grid.posY + (i * grid.cellHeight) + 1,
 			(float) ((i == grid.cols) ? grid.width + 2 : grid.width),
