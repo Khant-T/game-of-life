@@ -13,35 +13,35 @@ struct Cell
 		: isAlive{alive}, neighbours{0}
 	{  }
 
-	void Die() { isAlive = false; }
+	void Die()  { isAlive = false; }
 	void Born() { isAlive = true; }
 	void Flip() { isAlive = !isAlive; }
 
-	bool isAlive;
-	int neighbours;
+	bool isAlive	= 0;
+	int neighbours	= 0;
 };
 /* ****************************** */
 
 /* ****************************** */
 struct Grid
 {
-	int rows = 0;
-	int cols = 0;
+	int rows 			= 0;
+	int cols			= 0;
 
 	// Position of the grid, in the window
-	int posX = 0;
-	int posY = 0;
+	int posX 			= 0;
+	int posY 			= 0;
 
-	// Size of the grid, in the window
-	int width = 0;
-	int height = 0;
+	// Size of the grid
+	int width 			= 0;
+	int height 			= 0;
 
-	// Size of each cell, in the window
-	float cellHeight = 0;
-	float cellWidth = 0;
+	// Size of each cell
+	float cellHeight 	= 0;
+	float cellWidth 	= 0;
 
 	// Gap between the window and the grid
-	int borderSize = 20;
+	int borderSize 		= 20;
 };
 /* ****************************** */
 
@@ -53,18 +53,25 @@ public:
 	~Game();
 
 	void InitCells(int rows, int cols);
-	void Draw();
 	void Run();
+	void Draw();
 	void AdjustGrid();
 
 private:
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	bool isRunning  		= false;
+	bool isRunningSim		= false;
 
-	bool isRunning;
+	SDL_Window*   window	= nullptr;
+	SDL_Renderer* renderer  = nullptr;
+
+	int mouseX		= 0;
+	int mouseY		= 0;
+	int mouseCellX 	= 0;
+	int mouseCellY	= 0;
+	bool mouseDown	= false;
+
 
 	Grid grid;
-
 	vector<vector<Cell>> cells;
 };
 /* ****************************** */

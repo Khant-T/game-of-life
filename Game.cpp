@@ -1,6 +1,6 @@
 #include "Game.h"
 
-
+/* ****************************** */
 Game::Game()
 	: window{nullptr}, renderer{nullptr}, isRunning{false}
 {
@@ -34,15 +34,42 @@ Game::Game()
 	// Run program
 	isRunning = true;
 }
+/* ****************************** */
 
-
+/* ****************************** */
 Game::~Game()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 }
+/* ****************************** */
 
+/* ****************************** */
+void Game::InitCells(int rows, int cols)
+{
+	cells.clear();
+	grid.rows = rows;
+	grid.cols = cols;
 
+	for (int i = 0; i < rows; ++i)
+	{
+		vector<Cell> columns;
+		for (int j = 0; j < grid.cols; ++j)
+		{
+			columns.push_back(Cell());
+		}
+		cells.push_back(columns);
+	}
+
+	// Initialize some cells
+	for (int i = 0; i < rows; ++i)
+	{
+		cells[i][i].Born();
+	}
+}
+/* ****************************** */
+
+/* ****************************** */
 void Game::Run()
 {
 	InitCells(20, 20);
@@ -82,32 +109,9 @@ void Game::Run()
 		SDL_RenderPresent(renderer);
 	}
 }
+/* ****************************** */
 
-
-void Game::InitCells(int rows, int cols)
-{
-	cells.clear();
-	grid.rows = rows;
-	grid.cols = cols;
-
-	for (int i = 0; i < rows; ++i)
-	{
-		vector<Cell> columns;
-		for (int j = 0; j < grid.cols; ++j)
-		{
-			columns.push_back(Cell());
-		}
-		cells.push_back(columns);
-	}
-
-	// Initialize some cells
-	for (int i = 0; i < rows; ++i)
-	{
-		cells[i][i].Born();
-	}
-}
-
-
+/* ****************************** */
 void Game::Draw()
 {
 	for (int x = 0; x < grid.rows; ++x)
@@ -132,8 +136,9 @@ void Game::Draw()
 		}
 	}
 }
+/* ****************************** */
 
-
+/* ****************************** */
 void Game::AdjustGrid()
 // Keep the width and the height equal
 // Center the grid in the window
@@ -165,3 +170,4 @@ void Game::AdjustGrid()
 	else
 		grid.posY = ((float) wh/2.0f) - ((float) grid.height/2.0f);
 }
+/* ****************************** */
