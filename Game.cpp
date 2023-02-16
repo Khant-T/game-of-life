@@ -57,6 +57,12 @@ void Game::Run()
 		{
 			if (ev.window.event == SDL_WINDOWEVENT_CLOSE)
 				isRunning = false;
+
+			if (ev.window.event == SDL_WINDOWEVENT_RESIZED)
+				AdjustGrid();
+
+			if (ev.window.event == SDL_WINDOWEVENT_RESTORED)
+				AdjustGrid();
 		}
 
 		if (ev.type == SDL_KEYDOWN)
@@ -108,7 +114,7 @@ void Game::Draw()
 			// Define size and position for each cell
 			SDL_FRect cellRect = {
 				1.0f + (float) grid.posX + ((float) x * grid.cellWidth),
-				1.0f + (float) grid.posY + ((float) x * grid.cellHeight),
+				1.0f + (float) grid.posY + ((float) y * grid.cellHeight),
 				grid.cellWidth,
 				grid.cellHeight
 			};
