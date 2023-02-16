@@ -1,4 +1,6 @@
 include/
 lib/
+
 Makefile
-play
+
+game.life
