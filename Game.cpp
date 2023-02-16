@@ -1,7 +1,7 @@
 #include "Game.h"
 
-Game::Game():
-	window{nullptr}, renderer{nullptr}, isRunning{false}
+Game::Game()
+	: window{nullptr}, renderer{nullptr}, isRunning{false}
 {
 	// create SDL_Window
 	window = SDL_CreateWindow(
