@@ -38,7 +38,7 @@ struct Grid
 
 	// Size of each cell, in the window
 	float cellHeight = 0;
-	float cellWidth = 0
+	float cellWidth = 0;
 
 	// Gap between the window and the grid
 	int borderSize = 20;

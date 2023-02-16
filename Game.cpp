@@ -47,7 +47,7 @@ void Game::Run()
 {
 	InitCells(20, 20);
 	AdjustGrid();
-	
+
 	while (isRunning)
 	{
 		SDL_Event ev;
@@ -68,12 +68,14 @@ void Game::Run()
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 		SDL_RenderClear(renderer);
 
+		Draw();
+
 		SDL_RenderPresent(renderer);
 	}
 }
 
 
-void Game::InitCells(int r, int c)
+void Game::InitCells(int rows, int cols)
 {
 	cells.clear();
 	grid.rows = rows;
@@ -86,7 +88,7 @@ void Game::InitCells(int r, int c)
 		{
 			columns.push_back(Cell());
 		}
-		cells.push_back(column);
+		cells.push_back(columns);
 	}
 
 	// Initialize some cells
@@ -99,9 +101,9 @@ void Game::InitCells(int r, int c)
 
 void Game::Draw()
 {
-	for (int i = 0; i < grid.rows; ++i)
+	for (int x = 0; x < grid.rows; ++x)
 	{
-		for (int j = 0; j < grid.cols; ++j)
+		for (int y = 0; y < grid.cols; ++y)
 		{
 			// Define size and position for each cell
 			SDL_FRect cellRect = {
