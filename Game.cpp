@@ -63,6 +63,9 @@ void Game::Run()
 
 			if (ev.window.event == SDL_WINDOWEVENT_RESTORED)
 				AdjustGrid();
+
+			if (ev.window.event == SDL_WINDOW_FULLSCREEN)
+				AdjustGrid();
 		}
 
 		if (ev.type == SDL_KEYDOWN)
